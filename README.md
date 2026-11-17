@@ -12,6 +12,8 @@ rendered live next to a 3D robot you can move.
 ![Version](https://img.shields.io/badge/version-3.0.0-4f8ff7)
 ![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Chrome%20%7C%20Edge-1f2937)
 ![Offline](https://img.shields.io/badge/works-offline-34d399)
+![License](https://img.shields.io/badge/license-MIT-lightgrey)
+![Real robot control](https://img.shields.io/badge/real%20robot%20control-in%20development-f59e0b)
 ![Three.js](https://img.shields.io/badge/3D-Three.js-049ef4)
 ![Electron](https://img.shields.io/badge/desktop-Electron-47848f)
 ![Python](https://img.shields.io/badge/bridge-Python%203-3776ab)
@@ -29,7 +31,7 @@ rendered live next to a 3D robot you can move.
 - [Installation](#installation)
 - [Quick tour](#quick-tour)
 - [Adding your own robot](#adding-your-own-robot)
-- [Driving a real JAKA ZU5](#driving-a-real-jaka-zu5)
+- [Driving a real JAKA ZU5 (in development)](#driving-a-real-jaka-zu5-in-development)
 - [Project structure](#project-structure)
 - [Development](#development)
 - [Troubleshooting](#troubleshooting)
@@ -45,6 +47,12 @@ screen.
 It runs in a browser with no installation, or as a Windows desktop app. It can also drive a real **JAKA ZU5** robot
 through a small Python bridge, and falls back to a virtual robot when no hardware is connected, so every feature can
 be tried without a robot.
+
+> **Project status.** The learning and simulation features (vectors, forward and inverse kinematics, Jacobian view,
+> trajectory, block diagram, reports, robot models) are complete and tested. The **real robot control** feature
+> (Start Control) is **still in development and is experimental**: it has only been tried on a limited setup, it is
+> not safe for unsupervised use, and it can change between versions. See
+> [Driving a real JAKA ZU5](#driving-a-real-jaka-zu5-in-development).
 
 The interface is icon first: feature buttons show only an icon, their name appears as a tooltip, and the **Tutorial**
 page explains every icon. English is the default language and Indonesian can be selected in Settings.
@@ -62,7 +70,7 @@ page explains every icon. English is the default language and Indonesian can be 
 | **Trajectory** | Quintic time scaling, pick-and-place paths, singularity warnings, energy and gravity torque estimates. |
 | **Draw** | DH axis skeleton, joint frames, parameter visuals and a cinematic full-screen mode. |
 | **Report and code export** | Frozen PDF or DOCX reports, and generated Python, MATLAB and Simulink code from the current page. |
-| **Start Control** | Real robot monitoring, teach pendant jogging with a watchdog, FK or IK set-position, and a Python program editor with templates. |
+| **Start Control** (in development) | Real robot monitoring, teach pendant jogging with a watchdog, FK or IK set-position, and a Python program editor with templates. |
 | **Tutorial** | Guided tour, a dictionary of every icon, and the explanatory notes of each page. |
 
 ## Screenshots
@@ -164,7 +172,18 @@ import it again, for example to share it. A minimal JSON file, here the UR5e:
 
 Closed-form IK is only offered for arms with the ZU5 structure. Every other model uses numerical IK.
 
-## Driving a real JAKA ZU5
+## Driving a real JAKA ZU5 (in development)
+
+> **This feature is under development and experimental.**
+>
+> - It is **not production ready** and not a certified robot controller.
+> - It has been tried on a limited setup only. Behavior on other robots, firmware versions or networks is untested.
+> - Features, behavior and the Python bridge protocol may change or break between versions.
+> - Use it only on a robot you own or are allowed to operate, with a clear workspace, low speed and the emergency
+>   stop within reach. You are responsible for the safe use of your robot.
+> - The software is provided without warranty (see [LICENSE](LICENSE)).
+>
+> If you only want to learn kinematics, you do not need this feature: every other page works without a robot.
 
 The **Start Control** page talks to the robot through `bridge/robot_bridge.py`, a Python process that exchanges JSON
 lines with the app. In the desktop app the bridge is started for you.
@@ -182,7 +201,8 @@ and the program editor can still be tried safely. Check the top bar of the dashb
 bridge, the lower line is the robot.
 
 > **Safety.** Moving a real robot is dangerous. Keep the emergency stop within reach, start with low speed, and make
-> sure the workspace is clear. Teach pendant jogging stops automatically when the watchdog does not receive a signal.
+> sure the workspace is clear. Teach pendant jogging is designed to stop when the watchdog does not receive a signal,
+> but do not rely on this alone while the feature is in development.
 
 ## Project structure
 
@@ -255,6 +275,8 @@ formulas, and the UR5e zero pose is verified against the published geometry.
 | `npm start` cannot find Electron | Run `npm install` inside the `desktop` folder first. |
 
 ## Credits and licenses
+
+This project is released under the [MIT License](LICENSE). Components bundled with it keep their own licenses:
 
 - Three.js, KaTeX, Chart.js, jsPDF, docx (MIT) and MathJax (Apache 2.0). See `app/vendor/LICENSES.md`.
 - Fira Sans and Fira Code (SIL Open Font License 1.1), Phosphor Icons (MIT). See `app/assets`.

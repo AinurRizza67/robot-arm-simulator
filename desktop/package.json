@@ -6,6 +6,7 @@
   "author": "PjBL T-17",
   "main": "main.js",
   "private": true,
+  "license": "MIT",
   "scripts": {
     "prepare-app": "node prepare.js",
     "start": "node prepare.js && electron .",

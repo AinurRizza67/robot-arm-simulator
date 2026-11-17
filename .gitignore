@@ -1,0 +1,30 @@
+# dependencies
+node_modules/
+
+# build output and generated copies (recreated by `npm run dist` / `npm start` in desktop/)
+desktop/dist/
+desktop/app/
+desktop/bridge/
+*.exe
+*.blockmap
+
+# official JAKA SDK (vendor binaries, not redistributed in this repository)
+bridge/sdk/
+
+# test output
+tools/shots/
+tools/*.log
+
+# python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# editor, OS and tooling
+.vscode/
+.idea/
+.claude/
+.DS_Store
+desktop.ini
+Thumbs.db
+*.log

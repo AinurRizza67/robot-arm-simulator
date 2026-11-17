@@ -1,0 +1,23 @@
+{
+  "name": "jaka-zu5-simulator-tools",
+  "private": true,
+  "description": "Headless QA, screenshots and report export tests for the JAKA ZU5 simulator",
+  "scripts": {
+    "qa": "node qa.js",
+    "screenshots": "node screenshots.js",
+    "report": "node report_export_test.js"
+  },
+  "devDependencies": {
+    "chart.js": "^4.4.0",
+    "docx": "^9.5.1",
+    "jsdom": "^24.1.3",
+    "jspdf": "^2.5.2",
+    "jspdf-autotable": "^3.8.4",
+    "katex": "^0.16.9",
+    "mathjax": "^3.2.2",
+    "opentype.js": "^1.3.4",
+    "pdfjs-dist": "^4.10.38",
+    "puppeteer-core": "^23.11.1",
+    "three": "^0.128.0"
+  }
+}

@@ -1,0 +1,773 @@
+/* 05_simulation.css
+   Vector Simulation, JAKA FK/IK, Zero Zone, block diagram page, repeated playback.
+   Loaded in order by index.html; file order is cascade order. Design tokens live in 00_tokens.css. */
+/* ---- Vector Simulation (Sesi 15): tab 01-05 lama dalam satu halaman, kanvas dibekukan, navigasi bola ---- */
+body[data-mode='vector'] .wrap {
+  display: none;
+}
+body:not([data-mode='vector']) #app-vector {
+  display: none;
+}
+#app-vector {
+  min-height: 100vh;
+  background: var(--bg);
+  font-family: Arial, Helvetica, sans-serif;
+}
+.vs-top {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 0 24px;
+  background: var(--bg);
+  border-bottom: 1px solid var(--panel-line);
+}
+.vs-kicker {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+.vs-top h1 {
+  margin: 2px 0 0;
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--text-strong);
+}
+body:not(.reference-on) #vs-reference {
+  display: none;
+}
+.vs-page {
+  display: none;
+}
+.vs-page.active {
+  display: block;
+}
+#app-vector .sim-body {
+  grid-template-columns: minmax(0, 1.15fr) minmax(420px, 1fr);
+  align-items: start;
+}
+/* kanvas tetap di tempat selama kolom persamaan di-scroll */
+#app-vector .stage {
+  position: sticky;
+  top: 64px;
+  height: calc(100vh - 64px);
+  display: flex;
+  flex-direction: column;
+  padding: 14px 14px 92px;
+  border-right: 1px solid var(--line);
+}
+#app-vector .canvas-holder {
+  flex: 1;
+  aspect-ratio: auto;
+  min-height: 0;
+}
+#app-vector .canvas-holder canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
+}
+#app-vector .canvas-holder > div {
+  z-index: 1;
+} /* label koordinat, legenda, petunjuk kamera di atas kanvas */
+#app-vector .side {
+  max-height: none;
+  overflow: visible;
+  overflow-y: visible;
+  padding: 18px 22px 120px;
+  min-width: 0;
+}
+#app-vector .eq .katex {
+  font-size: 1.02em;
+} /* persamaan panjang muat di kolom kanan */
+#app-vector .eq-label {
+  font-size: 11px;
+  color: var(--muted);
+  margin: 14px 2px 2px;
+}
+#app-vector .eq-label:first-child {
+  margin-top: 2px;
+}
+.eq-note {
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.5;
+  margin: 2px 2px 6px;
+}
+#app-vector .side h3 {
+  font-size: 16px;
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--text-strong);
+  margin-bottom: 12px;
+}
+#app-vector .block {
+  background: var(--panel);
+  border: 1px solid var(--panel-line);
+  border-radius: 10px;
+  padding: 14px;
+  margin-bottom: 12px;
+}
+#app-vector .block h4 {
+  font-size: 12px;
+  color: var(--text);
+  letter-spacing: 0.03em;
+}
+#app-vector .slider-row .lbl {
+  font-size: 12.5px;
+}
+#app-vector .stat-grid {
+  font-size: 13px;
+}
+#app-vector .note {
+  font-size: 12px;
+}
+#app-vector .eq {
+  padding: 12px 10px;
+}
+#app-vector .katex-display {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 2px 0 6px;
+}
+@media (max-width: 900px) {
+  #app-vector .sim-body {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  #app-vector .stage {
+    height: 46vh;
+    padding: 10px;
+    border-right: none;
+    border-bottom: 1px solid var(--line);
+    z-index: 5;
+    background: var(--bg);
+  }
+  #app-vector .side {
+    padding: 14px 16px 120px;
+  }
+}
+.vs-balls {
+  position: fixed;
+  left: 50%;
+  bottom: 18px;
+  transform: translateX(-50%);
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  background: var(--panel);
+  border: 1px solid var(--panel-line);
+  border-radius: 40px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  max-width: calc(100vw - 110px);
+}
+body:not([data-mode='vector']) .vs-balls {
+  display: none;
+}
+.vs-ball {
+  height: 46px;
+  min-width: 46px;
+  border-radius: 23px;
+  border: 1px solid var(--panel-line);
+  background: var(--panel-2);
+  color: var(--text);
+  font:
+    700 15px Arial,
+    Helvetica,
+    sans-serif;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 0 14px;
+  transition:
+    background 0.15s,
+    border-color 0.15s,
+    color 0.15s;
+  white-space: nowrap;
+}
+.vs-ball span {
+  display: none;
+  font-size: 13px;
+  font-weight: 600;
+}
+.vs-ball:hover {
+  border-color: var(--gold);
+}
+.vs-ball.on {
+  background: var(--gold);
+  color: var(--on-accent);
+  border-color: var(--gold);
+}
+.vs-ball.on span {
+  display: inline;
+}
+.vs-ball.vs-exit {
+  background: none;
+  border-color: var(--rose);
+  color: var(--rose);
+  margin-left: 6px;
+  padding: 0 12px;
+}
+.vs-ball.vs-exit:hover {
+  background: var(--rose);
+  color: #fff;
+}
+.vs-exit svg {
+  width: 18px;
+  height: 18px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+@media (max-width: 600px) {
+  .vs-ball.on span {
+    display: none;
+  }
+  .vs-balls {
+    left: auto;
+    right: 10px;
+    transform: none;
+    gap: 6px;
+    padding: 6px 8px;
+    max-width: calc(100vw - 92px);
+  }
+  .vs-ball {
+    height: 40px;
+    min-width: 40px;
+    padding: 0 10px;
+    font-size: 14px;
+  }
+  .vs-ball.vs-exit {
+    margin-left: 2px;
+  }
+}
+
+/* ---- JAKA Simulation FK/IK (Sesi 16b): tab 07/08 lama, kanvas dibekukan, navigasi atas ala konfigurator ---- */
+body[data-mode='jaka'] .wrap {
+  display: none;
+}
+body:not([data-mode='jaka']) #app-jaka {
+  display: none;
+}
+#app-jaka {
+  min-height: 100vh;
+  background: var(--bg);
+  font-family: Arial, Helvetica, sans-serif;
+}
+.jk-top {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  height: 64px;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 12px;
+  padding: 0 20px;
+  background: var(--bg);
+  border-bottom: 1px solid var(--panel-line);
+}
+.jk-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+.jk-left h1 {
+  margin: 2px 0 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-strong);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.jk-right {
+  display: flex;
+  justify-content: flex-end;
+}
+.jk-round {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 1px solid var(--panel-line);
+  background: var(--panel);
+  color: var(--text);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+}
+.jk-round:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+.jk-round svg {
+  width: 20px;
+  height: 20px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.jk-mode button {
+  padding: 9px 16px;
+}
+body:not(.reference-on) #jk-reference {
+  display: none;
+}
+.jk-page {
+  display: none;
+}
+.jk-page.active {
+  display: block;
+}
+#app-jaka .sim-body {
+  grid-template-columns: minmax(0, 1.25fr) minmax(400px, 1fr);
+  align-items: start;
+}
+#app-jaka .stage {
+  position: sticky;
+  top: 64px;
+  height: calc(100vh - 64px);
+  display: flex;
+  flex-direction: column;
+  padding: 12px 14px 14px;
+  border-right: 1px solid var(--line);
+  overflow: hidden;
+}
+#app-jaka .canvas-holder {
+  flex: 1;
+  aspect-ratio: auto;
+  min-height: 260px;
+}
+#app-jaka .canvas-holder canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
+}
+#app-jaka .canvas-holder > div,
+#app-jaka .canvas-holder > button {
+  z-index: 1;
+}
+#app-jaka .side {
+  max-height: none;
+  overflow: visible;
+  overflow-y: visible;
+  padding: 18px 22px 110px;
+  min-width: 0;
+}
+#app-jaka .side h3 {
+  font-size: 14px;
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--text-strong);
+}
+#app-jaka .traj-bar {
+  flex: none;
+}
+#sec-tau-fk {
+  margin: 0 0 14px;
+} /* rumus torsi dan energi live, kini di upside bar Blok Diagram */
+/* Kurung matriks KaTeX berposisi absolut; tanpa position:relative, isi akordeon yang tertutup lolos dari overflow:hidden
+   dan memanjangkan halaman (dulu tertutupi karena panel kanan punya scroll sendiri) */
+.accordion-body,
+.math-display-container {
+  position: relative;
+}
+.jk-views {
+  position: absolute;
+  left: 50%;
+  bottom: 12px;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 6px;
+  padding: 5px;
+  border-radius: 22px;
+  background: var(--label-bg);
+  border: 1px solid var(--panel-line);
+}
+.jk-views button {
+  border: none;
+  background: none;
+  color: var(--text);
+  font:
+    600 12px Arial,
+    Helvetica,
+    sans-serif;
+  padding: 6px 12px;
+  border-radius: 16px;
+  cursor: pointer;
+}
+.jk-views button:hover {
+  background: var(--hover-bg);
+  color: var(--gold);
+}
+.jk-shot {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+}
+#app-jaka .cam-hint {
+  bottom: 60px;
+}
+@media (max-width: 900px) {
+  #app-jaka .sim-body {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  #app-jaka .stage {
+    position: relative;
+    top: 0;
+    height: auto;
+    border-right: none;
+    border-bottom: 1px solid var(--line);
+  }
+  #app-jaka .canvas-holder {
+    flex: none;
+    height: 52vh;
+  }
+  .jk-top {
+    grid-template-columns: auto 1fr;
+    height: auto;
+    padding: 10px 14px;
+    row-gap: 8px;
+  }
+  .jk-top .jk-mode {
+    grid-column: 1 / -1;
+    justify-self: center;
+  }
+  #app-jaka .stage {
+    top: 0;
+  }
+}
+
+/* ---- 0 Zone (Sesi 16c) ---- */
+.zz-card {
+  background: var(--panel);
+  border: 1px solid var(--panel-line);
+  border-radius: 12px;
+  padding: 14px;
+  margin: 4px 0 16px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+.zz-card.locked {
+  border-color: var(--gold);
+}
+.zz-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.zz-head b {
+  font-size: 15px;
+  color: var(--text-strong);
+}
+.zz-chip {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 12px;
+  background: var(--tint-2);
+  color: var(--amber);
+}
+.zz-card.locked .zz-chip {
+  color: var(--green);
+}
+.zz-steps {
+  display: flex;
+  gap: 6px;
+  list-style: none;
+  padding: 0;
+  margin: 0 0 10px;
+  flex-wrap: wrap;
+}
+.zz-steps li {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--muted);
+  padding: 4px 10px 4px 4px;
+  border-radius: 14px;
+  background: var(--panel-2);
+}
+.zz-steps li i {
+  font-style: normal;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--panel-line);
+  color: var(--text);
+  font-size: 11px;
+  font-weight: 700;
+}
+.zz-steps li.on {
+  color: var(--text-strong);
+  font-weight: 700;
+}
+.zz-steps li.on i {
+  background: var(--gold);
+  color: var(--on-accent);
+}
+.zz-steps li.done i {
+  background: var(--green);
+  color: #fff;
+}
+.zz-desc {
+  font-size: 12.5px;
+  color: var(--muted);
+  line-height: 1.55;
+  margin: 0 0 10px;
+}
+.zz-q {
+  font-size: 12.5px;
+  color: var(--text);
+  margin: 0 0 10px;
+  font-weight: 700;
+}
+.zz-btns {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+.zz-card label {
+  font-size: 12px;
+  color: var(--muted);
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+.zz-rel {
+  font-size: 11px;
+  color: var(--gold);
+  margin: -4px 0 6px;
+}
+
+/* ---- JAKA + Blok Diagram (Sesi 17a) ---- */
+#view-bd {
+  position: relative;
+  padding: 0 0 60px;
+}
+.bd-upbar {
+  position: sticky;
+  top: 64px;
+  z-index: 30;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 20px;
+  background: var(--panel);
+  border: none;
+  border-bottom: 1px solid var(--panel-line);
+  color: var(--text);
+  font:
+    13px Arial,
+    Helvetica,
+    sans-serif;
+  cursor: pointer;
+  text-align: left;
+}
+.bd-upbar:hover {
+  color: var(--gold);
+}
+.bd-upbar[aria-expanded='true'] .bd-up-ic {
+  transform: rotate(180deg);
+}
+.bd-up-ic {
+  transition: transform 0.2s;
+  font-size: 14px;
+}
+.bd-up {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 44px;
+  z-index: 29;
+  background: var(--bg);
+  border-bottom: 2px solid var(--gold);
+  padding: 14px 20px 20px;
+  max-height: calc(100vh - 120px);
+  overflow: auto;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+}
+.bd-up-tabs {
+  margin-bottom: 12px;
+}
+.bd-up-panel .bd-card {
+  max-width: 900px;
+}
+.bd-dash {
+  display: block;
+}
+.bd-dash-inner {
+  background: var(--modal-bg);
+  border: 1px solid var(--panel-line);
+  border-radius: 8px;
+}
+.bd-main {
+  display: grid;
+  grid-template-columns: minmax(0, 1.9fr) minmax(340px, 1fr);
+  gap: 16px;
+  padding: 16px 20px;
+  align-items: start;
+}
+@media (max-width: 1000px) {
+  .bd-main {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+.bd-hint {
+  font-size: 12px;
+  color: var(--muted);
+  margin: 8px 2px 0;
+}
+.bd-robot-slot .canvas-holder {
+  aspect-ratio: auto;
+  height: 380px;
+}
+.bd-robot-slot .canvas-holder canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
+}
+.bd-robot-slot .canvas-holder > div,
+.bd-robot-slot .canvas-holder > button {
+  z-index: 1;
+}
+
+/* ---- Sambungan blok yang bisa diubah (Sesi 17b) ---- */
+.bd-block {
+  cursor: grab;
+}
+.bd-port {
+  fill: var(--panel);
+  stroke: var(--muted);
+  stroke-width: 2;
+  cursor: crosshair;
+}
+.bd-port.bd-out {
+  stroke: var(--gold);
+}
+.bd-port.bd-armed {
+  fill: var(--gold);
+}
+.bd-port.bd-target {
+  stroke: var(--gold);
+  stroke-width: 3;
+}
+.bd-hit {
+  stroke: transparent;
+  stroke-width: 14;
+  fill: none;
+  cursor: pointer;
+}
+.bd-edge.bd-bad {
+  stroke: var(--rose) !important;
+  stroke-dasharray: 6 4;
+}
+.status.bad {
+  background: rgba(201, 96, 90, 0.12);
+  border-color: var(--rose);
+  color: var(--text);
+}
+#bd-valid {
+  margin-top: 10px;
+  font-size: 12.5px;
+  line-height: 1.55;
+}
+
+/* ---- Play berulang dan aliran data (Sesi 17c) ---- */
+.bd-run {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  font-size: 13px;
+}
+.bd-run select {
+  margin-left: 4px;
+}
+.bd-run-st {
+  font-size: 12.5px;
+  color: var(--muted);
+}
+.bd-last {
+  font-size: 12px;
+  color: var(--gold);
+  margin-top: 6px;
+  min-height: 16px;
+  font-weight: 700;
+}
+.bd-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  font-size: 12.5px;
+  margin-bottom: 8px;
+}
+.bd-filter label {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+.bd-stream-wrap {
+  max-height: 300px;
+  overflow: auto;
+  border: 1px solid var(--panel-line);
+  border-radius: 8px;
+}
+.bd-stream {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+.bd-stream th {
+  position: sticky;
+  top: 0;
+  background: var(--panel-2);
+  text-align: right;
+  padding: 6px 8px;
+  color: var(--muted);
+  font-weight: 700;
+}
+.bd-stream th:first-child,
+.bd-stream td:first-child,
+.bd-stream th:nth-child(2),
+.bd-stream td:nth-child(2) {
+  text-align: left;
+}
+.bd-stream td {
+  padding: 5px 8px;
+  border-top: 1px solid var(--row-line);
+  text-align: right;
+}
+.bd-robot-params .sim-body,
+.bd-robot-params .side {
+  display: block;
+  max-height: none;
+  overflow: visible;
+}

@@ -1,0 +1,1075 @@
+/* 08_redesign.css
+   Visual layer loaded last: typography, icon buttons, menu tiles, tabs, panels, inputs, focus, tooltip,
+   icon guide and the Jacobian view HUD. Style: minimal / Swiss, dense dashboard, subtle motion.
+   Only overrides look and feel; layout and behaviour stay in the earlier stylesheets. */
+
+/* ---------- typography ---------- */
+html {
+  -webkit-text-size-adjust: 100%;
+}
+body {
+  font-family: var(--font-ui);
+  font-size: var(--fs-md);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-variant-numeric: tabular-nums;
+}
+h1,
+h2,
+h3,
+h4,
+.app-title,
+.st-title,
+.head h1 {
+  font-family: var(--font-ui);
+  letter-spacing: -0.01em;
+  text-transform: none;
+}
+.app-title {
+  font-weight: 600;
+}
+pre,
+code,
+textarea,
+.matrix,
+.matrixOut,
+.mono,
+.cm,
+.ctl-code,
+.lp-code pre,
+.jv {
+  font-family: var(--font-code);
+  font-variant-ligatures: none;
+}
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+}
+
+/* ---------- interactive basics ---------- */
+button,
+[role='button'],
+select,
+summary,
+.accordion-header,
+.plots-trigger {
+  cursor: pointer;
+}
+button:disabled {
+  cursor: not-allowed;
+}
+button,
+.app-btn,
+.btn,
+.grid-btn,
+.tab-btn,
+select,
+input,
+textarea {
+  transition:
+    background-color var(--dur) var(--ease),
+    border-color var(--dur) var(--ease),
+    color var(--dur) var(--ease),
+    box-shadow var(--dur) var(--ease),
+    transform var(--dur-fast) var(--ease);
+}
+:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring) !important;
+}
+button:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+/* ---------- buttons ---------- */
+.btn,
+.app-btn,
+.stage-controls button,
+.grid-btn {
+  border-radius: var(--r-sm);
+  font-weight: 500;
+}
+.btn.primary,
+.app-btn.primary {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--on-accent);
+}
+.btn.primary:hover,
+.app-btn.primary:hover {
+  background: var(--gold-hover);
+  border-color: var(--gold-hover);
+}
+
+/* icon-only buttons (label lives in aria-label and the tooltip) */
+svg.ico {
+  width: var(--icon);
+  height: var(--icon);
+  fill: currentColor;
+  flex: none;
+  display: block;
+}
+/* no display rule here: visibility rules elsewhere (observer mode, hidden tabs) must keep working */
+button.icon-btn {
+  min-width: var(--ctl-h);
+  min-height: var(--ctl-h);
+  padding: 0 8px;
+  line-height: 0;
+  text-align: center;
+  vertical-align: middle;
+}
+button.icon-btn svg.ico {
+  display: inline-block;
+  vertical-align: middle;
+}
+.jk-round svg.ico {
+  fill: currentColor;
+  stroke: none;
+}
+.grid-btn.icon-btn,
+.stage-controls button.icon-btn {
+  min-width: 30px;
+  min-height: 30px;
+  padding: 0 6px;
+}
+.jk-views button.icon-btn {
+  min-width: 34px;
+  min-height: 32px;
+}
+
+/* ---------- menu tiles (dashboard and Simulation menus) ---------- */
+.icon-tile {
+  position: relative;
+  display: flex !important;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  aspect-ratio: 1 / 1;
+  min-height: 0 !important;
+  padding: 0 !important;
+  border-radius: var(--r-lg) !important;
+  background: var(--panel) !important;
+  border: 1px solid var(--panel-line) !important;
+  box-shadow: var(--shadow-1);
+  transition:
+    transform var(--dur) var(--ease),
+    border-color var(--dur) var(--ease),
+    box-shadow var(--dur) var(--ease),
+    background-color var(--dur) var(--ease);
+}
+.icon-tile > :not(.tile-ico) {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  overflow: hidden !important;
+  clip: rect(0 0 0 0) !important;
+  white-space: nowrap !important;
+  margin: -1px !important;
+  padding: 0 !important;
+  border: 0 !important;
+}
+.icon-tile .tile-ico {
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 18px;
+  background: var(--tint-2);
+  color: var(--gold);
+  transition:
+    background-color var(--dur) var(--ease),
+    color var(--dur) var(--ease);
+}
+.icon-tile .tile-ico svg.ico {
+  width: 34px;
+  height: 34px;
+}
+.icon-tile:hover,
+.icon-tile:focus-visible {
+  transform: translateY(-3px);
+  border-color: var(--gold) !important;
+  box-shadow: var(--shadow-2);
+}
+.icon-tile:hover .tile-ico,
+.icon-tile:focus-visible .tile-ico {
+  background: var(--gold);
+  color: var(--on-accent);
+}
+.dh-card.hl.icon-tile .tile-ico {
+  background: var(--gold);
+  color: var(--on-accent);
+}
+/* tile grids: only sizes change, visibility rules of 02_app_shell.css stay in charge */
+#main-menu,
+#app-home.jaka #jaka-choice,
+.dh-grid {
+  grid-template-columns: repeat(auto-fit, 128px) !important;
+  justify-content: center;
+  gap: 16px !important;
+  max-width: 760px;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+.dh-grid {
+  grid-template-columns: repeat(auto-fit, 156px) !important;
+}
+
+/* ---------- livelier menu pages: larger coloured tiles, glow and dot grid ---------- */
+#app-home,
+#app-dash {
+  position: relative;
+  overflow: hidden;
+  background: radial-gradient(900px 520px at 15% 10%, color-mix(in srgb, var(--gold) 16%, transparent), transparent 70%),
+    radial-gradient(800px 520px at 90% 85%, color-mix(in srgb, #a78bfa 14%, transparent), transparent 70%),
+    radial-gradient(700px 420px at 85% 15%, color-mix(in srgb, #34d399 10%, transparent), transparent 70%), var(--bg) !important;
+}
+#app-home::before,
+#app-dash::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: radial-gradient(color-mix(in srgb, var(--text) 16%, transparent) 1px, transparent 1.4px);
+  background-size: 22px 22px;
+  -webkit-mask-image: radial-gradient(ellipse at 50% 45%, #000 25%, transparent 80%);
+  mask-image: radial-gradient(ellipse at 50% 45%, #000 25%, transparent 80%);
+  opacity: 0.6;
+}
+#app-home > *,
+#app-dash > * {
+  position: relative;
+}
+#app-home .app-title {
+  font-size: clamp(30px, 4vw, 44px);
+  font-weight: 700;
+  margin-bottom: 18px;
+}
+#main-menu,
+#app-home.jaka #jaka-choice {
+  grid-template-columns: repeat(auto-fit, 230px) !important;
+  gap: 24px !important;
+  max-width: 1080px;
+}
+#app-dash {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+#app-dash > .dh-bar,
+#app-dash > .dh-hero {
+  width: 100%;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.dh-grid {
+  grid-template-columns: repeat(auto-fit, 260px) !important;
+  gap: 26px !important;
+  max-width: 1200px;
+  margin-top: auto !important;
+  margin-bottom: auto !important;
+  padding: 40px 0 !important;
+}
+.dh-grid .icon-tile .tile-ico {
+  width: 124px;
+  height: 124px;
+  border-radius: 34px;
+}
+.dh-grid .icon-tile .tile-ico svg.ico {
+  width: 66px;
+  height: 66px;
+}
+.dh-grid .icon-tile .tile-bg svg.ico {
+  width: 190px;
+  height: 190px;
+}
+.icon-tile {
+  --tc: var(--gold);
+  overflow: hidden;
+  background: radial-gradient(140% 90% at 0% 0%, color-mix(in srgb, var(--tc) 22%, transparent), transparent 60%),
+    linear-gradient(180deg, color-mix(in srgb, var(--panel) 92%, var(--tc)), var(--panel)) !important;
+  border-color: color-mix(in srgb, var(--tc) 35%, var(--panel-line)) !important;
+}
+.icon-tile .tile-ico {
+  width: 112px;
+  height: 112px;
+  border-radius: 30px;
+  background: color-mix(in srgb, var(--tc) 18%, transparent);
+  color: var(--tc);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--tc) 35%, transparent);
+  z-index: 1;
+}
+.icon-tile .tile-ico svg.ico {
+  width: 60px;
+  height: 60px;
+}
+.icon-tile .tile-bg {
+  position: absolute !important;
+  right: -26px;
+  bottom: -30px;
+  width: auto !important;
+  height: auto !important;
+  clip: auto !important;
+  margin: 0 !important;
+  overflow: visible !important;
+  color: var(--tc);
+  opacity: 0.08;
+  pointer-events: none;
+  transform: rotate(-12deg);
+}
+.icon-tile .tile-bg svg.ico {
+  width: 150px;
+  height: 150px;
+}
+.icon-tile:hover,
+.icon-tile:focus-visible {
+  border-color: var(--tc) !important;
+  box-shadow:
+    0 0 0 1px var(--tc),
+    0 18px 40px color-mix(in srgb, var(--tc) 22%, transparent);
+}
+.icon-tile:hover .tile-ico,
+.icon-tile:focus-visible .tile-ico,
+.dh-card.hl.icon-tile .tile-ico {
+  background: var(--tc);
+  color: var(--on-accent);
+}
+.icon-tile:hover .tile-bg {
+  opacity: 0.16;
+}
+@media (max-width: 700px) {
+  #main-menu,
+  #app-home.jaka #jaka-choice,
+  .dh-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
+/* active model card on the Simulation page */
+.home-model {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin: 0 auto 30px;
+  padding: 12px 14px 12px 12px;
+  border: 1px solid var(--panel-line);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--panel) 82%, transparent);
+  backdrop-filter: blur(6px);
+  box-shadow: var(--shadow-1);
+}
+.hm-ico {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--gold);
+  color: var(--on-accent);
+}
+.hm-ico svg.ico {
+  width: 24px;
+  height: 24px;
+}
+.hm-name b {
+  display: block;
+  font-size: var(--fs-lg);
+  font-weight: 600;
+  color: var(--text-strong);
+}
+.hm-name span {
+  font-size: var(--fs-xs);
+  color: var(--muted);
+}
+.home-model dl {
+  display: flex;
+  gap: 18px;
+  margin: 0;
+  padding-left: 18px;
+  border-left: 1px solid var(--panel-line);
+}
+.home-model dt {
+  font-size: var(--fs-xs);
+  color: var(--muted);
+}
+.home-model dd {
+  margin: 0;
+  font: 500 var(--fs-md) var(--font-code);
+  color: var(--text);
+}
+.home-model button {
+  border-radius: 50%;
+  border: 1px solid var(--panel-line);
+  background: var(--panel-2);
+  color: var(--text);
+}
+.home-model button:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+/* ---------- panels, cards, accordions ---------- */
+.accordion-section,
+.panel,
+.set-card,
+.ctl-card {
+  border-radius: var(--r-md);
+}
+.accordion-header {
+  font-weight: 600;
+}
+input[type='number'],
+input[type='text'],
+select,
+textarea {
+  border-radius: var(--r-xs);
+}
+input[type='range'] {
+  accent-color: var(--gold);
+}
+
+/* ---------- title screen ---------- */
+.st-title {
+  font-size: clamp(44px, 7vw, 84px) !important;
+  line-height: 1.02;
+  font-weight: 700;
+}
+.st-sub {
+  font-size: 17px;
+}
+.st-tag {
+  margin: 4px 0 40px;
+  font-size: clamp(20px, 2.6vw, 28px);
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  color: var(--text-strong);
+}
+#st-go {
+  display: inline-grid !important;
+  place-items: center;
+  width: 132px;
+  height: 132px;
+  padding: 0 !important;
+  border-radius: 50% !important;
+  background: var(--gold) !important;
+  color: var(--on-accent);
+  box-shadow:
+    0 0 0 10px color-mix(in srgb, var(--gold) 18%, transparent),
+    0 0 0 22px color-mix(in srgb, var(--gold) 8%, transparent),
+    0 18px 50px color-mix(in srgb, var(--gold) 45%, transparent);
+  transition:
+    transform var(--dur) var(--ease),
+    box-shadow var(--dur) var(--ease);
+}
+#st-go svg.ico {
+  width: 60px;
+  height: 60px;
+  margin-left: 6px;
+}
+#st-go:hover {
+  transform: scale(1.07);
+  box-shadow:
+    0 0 0 12px color-mix(in srgb, var(--gold) 24%, transparent),
+    0 0 0 28px color-mix(in srgb, var(--gold) 10%, transparent),
+    0 22px 60px color-mix(in srgb, var(--gold) 55%, transparent);
+}
+.st-foot {
+  margin-top: 46px !important;
+}
+
+/* ---------- dashboard bar: back arrow, connection lines ---------- */
+#dh-to-start {
+  order: -1;
+  margin-right: 6px;
+}
+.dh-links {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  padding: 8px 12px;
+  border: 1px solid var(--panel-line);
+  border-radius: var(--r-md);
+  background: color-mix(in srgb, var(--panel) 80%, transparent);
+}
+.dh-links .dh-chip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: default;
+}
+.dh-links .dh-chip > span {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+.dh-links .dh-ic {
+  display: grid;
+  place-items: center;
+  color: var(--muted);
+}
+.dh-links .dh-ic svg.ico {
+  width: 15px;
+  height: 15px;
+}
+.dh-links .dh-chip i {
+  width: 64px;
+  height: 5px;
+  border-radius: 3px;
+  background: var(--rose);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--rose) 45%, transparent);
+  transition:
+    background-color var(--dur) var(--ease),
+    box-shadow var(--dur) var(--ease);
+}
+.dh-links .dh-chip.on i {
+  background: var(--green);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--green) 55%, transparent);
+}
+/* dashboard heading sits right above the tiles, aligned with their left edge */
+#app-dash > .dh-hero {
+  max-width: 1118px;
+  margin: auto auto 22px !important;
+}
+.dh-grid {
+  margin-top: 0 !important;
+  margin-bottom: auto !important;
+  padding: 0 0 48px !important;
+}
+/* the Vector Simulation exit is a plain back arrow like every other return */
+.vs-ball.vs-exit {
+  border-color: var(--panel-line) !important;
+  color: var(--text) !important;
+}
+.vs-ball.vs-exit:hover {
+  border-color: var(--gold) !important;
+  color: var(--gold) !important;
+  background: var(--panel-2) !important;
+}
+
+/* ---------- tooltip ---------- */
+.ui-tip {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 100000;
+  max-width: 280px;
+  padding: 6px 10px;
+  border-radius: var(--r-sm);
+  background: var(--text);
+  color: var(--bg);
+  font: 500 12px/1.35 var(--font-ui);
+  box-shadow: var(--shadow-2);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--dur-fast) var(--ease);
+}
+.ui-tip.on {
+  opacity: 1;
+}
+
+/* ---------- Tutorial page and icon guide ---------- */
+body:not([data-mode='tutorial']) #app-tutorial {
+  display: none;
+}
+body[data-mode='tutorial'] .wrap,
+body[data-mode='tutorial'] .app-screen:not(#app-tutorial) {
+  display: none !important;
+}
+#app-tutorial {
+  max-width: 1080px !important;
+  width: 100%;
+  margin: 0 auto;
+  padding: 28px 20px 64px;
+  align-items: stretch !important;
+  text-align: left !important;
+}
+#app-tutorial > * {
+  width: 100%;
+}
+.tut-hero {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 8px 0 28px;
+}
+.tut-hero h1 {
+  margin: 0;
+  font-size: var(--fs-xl);
+  font-weight: 600;
+  color: var(--text-strong);
+}
+.tut-hero p {
+  margin: 4px 0 0;
+  color: var(--muted);
+  max-width: 70ch;
+}
+.tut-start {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  padding: 0 18px;
+  border-radius: var(--r-md);
+  border: 1px solid var(--gold);
+  background: var(--gold);
+  color: var(--on-accent);
+  font-weight: 600;
+  font-size: var(--fs-md);
+}
+.tut-start:hover {
+  background: var(--gold-hover);
+}
+.tut-start svg.ico {
+  width: 20px;
+  height: 20px;
+}
+.ig-group {
+  margin-top: 28px;
+}
+.ig-group h3 {
+  margin: 0 0 12px;
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.ig-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 8px;
+}
+.ig-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border: 1px solid var(--panel-line);
+  border-radius: var(--r-md);
+  background: var(--panel);
+}
+.ig-item b {
+  display: block;
+  font-weight: 500;
+  font-size: var(--fs-sm);
+  color: var(--text);
+}
+.ig-item span:not(.ig-ico) {
+  display: block;
+  font-size: var(--fs-xs);
+  color: var(--muted);
+}
+.ig-ico {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 38px;
+  height: 38px;
+  border-radius: var(--r-md);
+  background: var(--tint-2);
+  color: var(--gold);
+}
+.ig-ico svg.ico {
+  width: 20px;
+  height: 20px;
+}
+
+/* model-vs-controller line: only shown when the check fails */
+#ctl-check:not(.bad) {
+  display: none;
+}
+
+/* explanatory notes moved from the pages to the Tutorial (19_page_notes.js) */
+/* 0 Zone explanation: re-rendered on every pose change, so hidden here instead of by class (text is in the Tutorial) */
+.zz-desc,
+.zz-rel {
+  display: none !important;
+}
+.moved-hint {
+  display: none !important;
+}
+.pn-title {
+  margin: 40px 0 4px;
+  font-size: var(--fs-lg);
+  font-weight: 600;
+  color: var(--text-strong);
+}
+.pn-group h3 {
+  margin: 20px 0 8px;
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.pn-group ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 6px;
+}
+.pn-group li {
+  padding: 10px 14px;
+  border: 1px solid var(--panel-line);
+  border-left: 3px solid var(--gold);
+  border-radius: var(--r-sm);
+  background: var(--panel);
+  color: var(--text);
+  font-size: var(--fs-sm);
+  line-height: 1.55;
+}
+.pn-group li b {
+  font-weight: 600;
+  margin-right: 4px;
+}
+
+/* ---------- Jacobian view (JAKA FK) ---------- */
+.jac-hud {
+  position: absolute;
+  left: 12px;
+  top: 34px;
+  z-index: 3;
+  width: 236px;
+  padding: 10px 12px 12px;
+  border-radius: var(--r-md);
+  border: 1px solid var(--panel-line);
+  background: color-mix(in srgb, var(--panel) 88%, transparent);
+  backdrop-filter: blur(6px);
+  box-shadow: var(--shadow-2);
+  font-size: var(--fs-xs);
+  color: var(--muted);
+}
+.jac-hud[hidden] {
+  display: none;
+}
+.jac-hud .jh-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+  margin: 2px 0;
+}
+.jac-hud .jh-row b {
+  font-family: var(--font-code);
+  font-weight: 500;
+  font-size: var(--fs-sm);
+  color: var(--text-strong);
+}
+.jac-hud .jh-big b {
+  font-size: 18px;
+}
+.jac-hud .jh-bar {
+  position: relative;
+  height: 6px;
+  margin: 8px 0 4px;
+  border-radius: 3px;
+  background: var(--panel-line);
+  overflow: hidden;
+}
+.jac-hud .jh-bar i {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  border-radius: 3px;
+  background: var(--green);
+  transition:
+    width var(--dur) var(--ease),
+    background-color var(--dur) var(--ease);
+}
+.jac-hud .jh-bar i.warn {
+  background: var(--amber);
+}
+.jac-hud .jh-bar i.bad {
+  background: var(--rose);
+}
+.jac-hud canvas {
+  display: block;
+  width: 100%;
+  height: 38px;
+  margin-top: 6px;
+}
+.jac-hud .jh-cols {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 4px;
+  margin-top: 8px;
+}
+.jac-hud .jh-cols button {
+  min-height: 26px;
+  padding: 0;
+  border-radius: var(--r-xs);
+  border: 1px solid var(--panel-line);
+  background: var(--panel-2);
+  color: var(--text);
+  font: 600 11px var(--font-code);
+  position: relative;
+}
+.jac-hud .jh-cols button::before {
+  content: '';
+  position: absolute;
+  left: 3px;
+  right: 3px;
+  bottom: 2px;
+  height: 2px;
+  border-radius: 1px;
+  background: var(--jc);
+}
+.jac-hud .jh-cols button.on {
+  border-color: var(--gold);
+  background: var(--tint-2);
+}
+.jk-round.jk-jac {
+  position: absolute;
+  right: 62px;
+  bottom: 12px;
+  z-index: 3;
+}
+.jk-round.jk-jac.on {
+  background: var(--gold);
+  color: var(--on-accent);
+  border-color: var(--gold);
+}
+
+/* ---------- Robot Models page (20_model_manager.js) ---------- */
+body:not([data-mode='models']) #app-models {
+  display: none;
+}
+body[data-mode='models'] .wrap,
+body[data-mode='models'] .app-screen:not(#app-models) {
+  display: none !important;
+}
+#app-models {
+  max-width: 1080px !important;
+  width: 100%;
+  margin: 0 auto;
+  padding: 28px 20px 64px;
+  align-items: stretch !important;
+  text-align: left !important;
+}
+#app-models > * {
+  width: 100%;
+}
+.model-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 14px;
+}
+.model-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  border: 1px solid var(--panel-line);
+  border-radius: var(--r-lg);
+  background: var(--panel);
+  box-shadow: var(--shadow-1);
+}
+.model-card.active {
+  border-color: var(--gold);
+  box-shadow:
+    0 0 0 1px var(--gold),
+    var(--shadow-1);
+}
+.mc-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.mc-head b {
+  display: block;
+  font-size: var(--fs-lg);
+  font-weight: 600;
+  color: var(--text-strong);
+}
+.mc-head span:not(.mc-ico) {
+  display: block;
+  font-size: var(--fs-xs);
+  color: var(--muted);
+}
+.mc-ico {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: var(--tint-2);
+  color: var(--gold);
+  flex: none;
+}
+.mc-ico svg.ico {
+  width: 24px;
+  height: 24px;
+}
+.mc-badge {
+  margin-left: auto;
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: var(--gold);
+  color: var(--on-accent);
+  font: 600 11px var(--font-ui);
+  font-style: normal;
+}
+.mc-facts {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px 12px;
+  margin: 0;
+}
+.mc-facts dt {
+  font-size: var(--fs-xs);
+  color: var(--muted);
+}
+.mc-facts dd {
+  margin: 0;
+  font-family: var(--font-code);
+  font-size: var(--fs-sm);
+  color: var(--text);
+}
+.mc-actions {
+  display: flex;
+  gap: 6px;
+  margin-top: auto;
+}
+.mc-actions button,
+.mf-actions button:not(.primary) {
+  border: 1px solid var(--panel-line);
+  border-radius: var(--r-sm);
+  background: var(--panel-2);
+  color: var(--text);
+}
+.mc-actions button:hover,
+.mf-actions button:not(.primary):hover {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+.mc-actions button[data-act='use'] {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--on-accent);
+}
+.model-add {
+  min-height: 200px;
+  border: 1px dashed var(--line);
+  border-radius: var(--r-lg);
+  background: transparent;
+  color: var(--muted);
+}
+.model-add:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+.model-add svg.ico {
+  width: 36px;
+  height: 36px;
+}
+.model-form {
+  margin-top: 24px;
+  padding: 18px;
+  border: 1px solid var(--panel-line);
+  border-radius: var(--r-lg);
+  background: var(--panel);
+}
+.model-form[hidden] {
+  display: none;
+}
+.mf-grid {
+  display: grid;
+  grid-template-columns: 2fr 2fr 1fr;
+  gap: 12px;
+}
+.model-form label > span {
+  display: block;
+  margin-bottom: 4px;
+  font-size: var(--fs-xs);
+  color: var(--muted);
+}
+.model-form input,
+.model-form select {
+  width: 100%;
+  min-height: 32px;
+  padding: 4px 8px;
+  border: 1px solid var(--panel-line);
+  background: var(--panel-2);
+  color: var(--text);
+}
+.mf-dh {
+  width: 100%;
+  margin-top: 16px;
+  border-collapse: collapse;
+}
+.mf-dh th {
+  padding: 6px;
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  color: var(--muted);
+  text-align: left;
+}
+.mf-dh td {
+  padding: 3px;
+}
+.mf-dh td:first-child {
+  width: 28px;
+  font-family: var(--font-code);
+  color: var(--muted);
+}
+.mf-dh input {
+  font-family: var(--font-code);
+}
+.mf-meshhead {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 18px;
+}
+.mf-meshhead label {
+  width: 120px;
+}
+.mf-mesh {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 8px;
+  margin-top: 8px;
+}
+.mf-file {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.mf-file > span {
+  width: 52px;
+  margin: 0 !important;
+}
+.mf-file input {
+  min-height: 0;
+  padding: 4px;
+  font-size: var(--fs-xs);
+}
+.mf-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 18px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 1ms !important;
+    animation-duration: 1ms !important;
+  }
+}

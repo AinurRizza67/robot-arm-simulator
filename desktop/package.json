@@ -1,0 +1,56 @@
+{
+  "name": "robot-arm-simulator",
+  "productName": "Robot Arm Simulator",
+  "version": "3.0.0",
+  "description": "Robot Arm Simulator: learn the mathematics inside robotic arms (JAKA ZU5, UR, custom models)",
+  "author": "PjBL T-17",
+  "main": "main.js",
+  "private": true,
+  "scripts": {
+    "prepare-app": "node prepare.js",
+    "start": "node prepare.js && electron .",
+    "dist": "node prepare.js && electron-builder --win nsis portable --x64"
+  },
+  "build": {
+    "appId": "id.pjblt17.jakazu5simulator",
+    "productName": "Robot Arm Simulator",
+    "directories": {
+      "output": "dist",
+      "buildResources": "build"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "app/**/*"
+    ],
+    "asar": true,
+    "win": {
+      "icon": "build/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Robot Arm Simulator",
+      "artifactName": "Robot-Arm-Simulator-Setup-v${version}.exe"
+    },
+    "portable": {
+      "artifactName": "Robot-Arm-Simulator-Portable-v${version}.exe"
+    },
+    "extraResources": [
+      {
+        "from": "bridge",
+        "to": "bridge",
+        "filter": [
+          "**/*"
+        ]
+      }
+    ]
+  },
+  "devDependencies": {
+    "electron": "^44.4.5",
+    "electron-builder": "^26.15.3"
+  }
+}

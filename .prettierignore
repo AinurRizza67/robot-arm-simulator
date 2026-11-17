@@ -1,0 +1,10 @@
+app/vendor/
+app/models/
+app/scripts/00_icon_data.js
+node_modules/
+desktop/dist/
+desktop/app/
+desktop/bridge/
+bridge/sdk/
+tools/shots/
+*.md

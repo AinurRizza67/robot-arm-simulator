@@ -1,0 +1,525 @@
+/* 06_observer_tutorial_report.css
+   Observer mode, tutorial overlay, report mode and report preview.
+   Loaded in order by index.html; file order is cascade order. Design tokens live in 00_tokens.css. */
+/* ---- Mode Pengamat (Sesi 18): rumus, rincian perhitungan, dan detail teknis disembunyikan ---- */
+.pg-only {
+  display: none !important;
+}
+body.mode-observer .pg-only {
+  display: inline-flex !important;
+}
+body.mode-observer .pg-hide,
+body.mode-observer #bd-svg .bd-live,
+body.mode-observer .bd-up-tabs [data-up='rumus'],
+body.mode-observer .bd-up-tabs [data-up='energi'],
+body.mode-observer .bd-up-tabs [data-up='stream'] {
+  display: none !important;
+}
+.pg-badge {
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--gold);
+  background: transparent;
+  color: var(--gold);
+  font:
+    700 12px Arial,
+    Helvetica,
+    sans-serif;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.pg-badge:hover {
+  background: var(--gold);
+  color: var(--bg);
+}
+.vs-top-r {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.jk-right {
+  gap: 8px;
+  align-items: center;
+}
+
+/* ---- Tutorial interaktif (Sesi 19): sorotan elemen + kartu arahan 5 detik ---- */
+#tut {
+  position: fixed;
+  inset: 0;
+  z-index: 1400;
+  font-family: Arial, Helvetica, sans-serif;
+}
+#tut[hidden] {
+  display: none;
+}
+.tut-block {
+  position: absolute;
+  inset: 0;
+}
+.tut-spot {
+  position: fixed;
+  border: 2px solid var(--gold);
+  border-radius: 10px;
+  box-shadow: 0 0 0 9999px rgba(4, 8, 16, 0.62);
+  pointer-events: none;
+  transition:
+    left 0.2s,
+    top 0.2s,
+    width 0.2s,
+    height 0.2s;
+}
+.tut-card {
+  position: fixed;
+  left: 16px;
+  top: 16px;
+  width: min(360px, calc(100vw - 32px));
+  background: var(--panel);
+  border: 1px solid var(--gold);
+  border-radius: 12px;
+  padding: 14px 16px 12px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
+  color: var(--text);
+}
+.tut-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+.tut-kick {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+.tut-skip {
+  background: none;
+  border: 1px solid var(--panel-line);
+  border-radius: 999px;
+  color: var(--text);
+  font:
+    700 12px Arial,
+    Helvetica,
+    sans-serif;
+  padding: 4px 12px;
+  cursor: pointer;
+}
+.tut-skip:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+.tut-card h3 {
+  margin: 8px 0 4px;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-strong);
+}
+.tut-card p {
+  margin: 0 0 10px;
+  font-size: 13.5px;
+  line-height: 1.55;
+}
+.tut-prog {
+  height: 4px;
+  border-radius: 2px;
+  background: var(--panel-line);
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+.tut-prog i {
+  display: block;
+  height: 100%;
+  width: 100%;
+  background: var(--gold);
+}
+#tut.paused .tut-prog i {
+  opacity: 0.35;
+}
+.tut-btns {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.tut-btns .app-btn {
+  padding: 6px 12px;
+  font-size: 12.5px;
+}
+.tut-link {
+  background: none;
+  border: none;
+  color: var(--muted);
+  font:
+    12px Arial,
+    Helvetica,
+    sans-serif;
+  cursor: pointer;
+  text-decoration: underline;
+  padding: 4px 0;
+}
+@media (max-width: 600px) {
+  .tut-card {
+    left: 16px !important;
+    top: auto !important;
+    bottom: 16px;
+    width: auto;
+    right: 16px;
+  }
+}
+
+/* ---- Mode Laporan (Sesi 20): bar laporan di JAKA FK, IK, Blok Diagram ---- */
+.lp-only {
+  display: none !important;
+}
+body.mode-report .lp-only {
+  display: inline-flex !important;
+}
+.lp-badge {
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--amber);
+  background: transparent;
+  color: var(--amber);
+  font:
+    700 12px Arial,
+    Helvetica,
+    sans-serif;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.lp-badge:hover {
+  background: var(--amber);
+  color: var(--bg);
+}
+.lp-bar {
+  display: none;
+  background: var(--panel);
+  border: 1px solid var(--amber);
+  border-left-width: 4px;
+  border-radius: 12px;
+  padding: 12px 14px;
+  margin: 0 0 14px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+body.mode-report .lp-bar {
+  display: block;
+}
+.lp-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 10px;
+}
+.lp-head > b {
+  font-size: 14px;
+  color: var(--amber);
+}
+.lp-st {
+  font-size: 12px;
+  color: var(--muted);
+  text-align: right;
+  line-height: 1.5;
+}
+.lp-st b {
+  color: var(--text);
+}
+.lp-flow {
+  font-size: 12px;
+  color: var(--muted);
+  margin: 6px 0 10px;
+  line-height: 1.5;
+}
+.lp-btns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.lp-btns .btn {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 12.5px;
+  font-weight: 700;
+  padding: 7px 12px;
+  border-radius: 6px;
+}
+.lp-list:empty {
+  display: none;
+}
+.lp-list {
+  margin-top: 10px;
+  border-top: 1px solid var(--panel-line);
+  padding-top: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.lp-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+  font-size: 12.5px;
+}
+.lp-item b {
+  color: var(--text-strong);
+}
+.lp-item small {
+  color: var(--muted);
+  display: block;
+}
+.lp-item .btn {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 11.5px;
+  padding: 5px 9px;
+  border-radius: 6px;
+}
+#lp-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1310;
+}
+#lp-modal.open {
+  display: flex;
+}
+.lp-box {
+  width: min(460px, 92vw);
+}
+.lp-box p {
+  font-size: 15px;
+  line-height: 1.5;
+}
+.lp-box div {
+  flex-wrap: wrap;
+}
+.lp-box .app-btn {
+  min-width: 0;
+}
+.lp-in {
+  width: 100%;
+  box-sizing: border-box;
+  margin: -6px 0 16px;
+  padding: 9px 11px;
+  border-radius: 8px;
+  border: 1px solid var(--panel-line);
+  background: var(--panel);
+  color: var(--text);
+  font:
+    14px Arial,
+    Helvetica,
+    sans-serif;
+}
+#view-bd .lp-bar {
+  margin-top: 12px;
+}
+
+/* ---- Pratinjau laporan (Sesi 20b): tampilan kertas, selalu terang ---- */
+#lp-prev {
+  position: fixed;
+  inset: 0;
+  z-index: 1305;
+  background: rgba(6, 10, 18, 0.72);
+  display: none;
+  flex-direction: column;
+  font-family: Arial, Helvetica, sans-serif;
+}
+#lp-prev.open {
+  display: flex;
+}
+.lp-prev-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background: var(--panel);
+  border-bottom: 1px solid var(--panel-line);
+  color: var(--text-strong);
+  flex-wrap: wrap;
+}
+.lp-prev-bar b {
+  font-size: 14px;
+}
+.lp-prev-body {
+  flex: 1;
+  overflow: auto;
+  padding: 24px 16px 60px;
+}
+.lp-code-tabs {
+  display: flex;
+  gap: 6px;
+}
+.lp-code-tabs button {
+  background: transparent;
+  border: 1px solid var(--panel-line);
+  color: var(--text);
+  border-radius: 8px;
+  padding: 6px 12px;
+  font:
+    13px Arial,
+    Helvetica,
+    sans-serif;
+  cursor: pointer;
+}
+.lp-code-tabs button.on {
+  background: var(--amber);
+  color: #1a1200;
+  border-color: var(--amber);
+  font-weight: bold;
+}
+.lp-code-pre {
+  background: #11161f;
+  color: #d7e2ee;
+  border-radius: 10px;
+  padding: 16px;
+  font:
+    13px/1.55 Consolas,
+    Menlo,
+    monospace;
+  white-space: pre;
+  overflow: auto;
+  max-width: 960px;
+  margin: 0 auto;
+}
+#lp-code {
+  position: fixed;
+  inset: 0;
+  z-index: 1305;
+  background: rgba(6, 10, 18, 0.72);
+  display: none;
+  flex-direction: column;
+  font-family: Arial, Helvetica, sans-serif;
+}
+#lp-code.open {
+  display: flex;
+}
+.lp-doc {
+  max-width: 860px;
+  margin: 0 auto;
+  background: #ffffff;
+  color: #1a1f2b;
+  padding: 44px 52px;
+  border-radius: 6px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.35);
+  font-size: 13.5px;
+  line-height: 1.6;
+}
+.lp-doc p {
+  margin: 6px 0 10px;
+}
+.lpd-title {
+  border-bottom: 2px solid #2f66b3;
+  padding-bottom: 10px;
+  margin-bottom: 14px;
+}
+.lpd-title .k {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #2f66b3;
+}
+.lpd-title h1 {
+  margin: 4px 0 0;
+  font-size: 24px;
+  color: #0b1220;
+}
+.lpd-h1 {
+  font-size: 17px;
+  color: #0b1220;
+  margin: 26px 0 8px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid #d0d5dd;
+}
+.lpd-h2 {
+  font-size: 14.5px;
+  color: #2f66b3;
+  margin: 18px 0 6px;
+}
+.lpd-note {
+  background: #fff7e8;
+  border-left: 4px solid #b7791f;
+  padding: 8px 12px;
+  margin: 10px 0;
+  font-size: 12.5px;
+  color: #4a3a1a;
+}
+.lpd-eql {
+  font-size: 12px;
+  font-weight: 700;
+  color: #566275;
+  margin-top: 10px;
+}
+.lpd-eq {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 2px 0;
+  color: #0b1220;
+}
+.lpd-cap {
+  font-size: 11.5px;
+  color: #566275;
+  margin-top: 10px;
+}
+.lpd-tw {
+  overflow-x: auto;
+  margin: 6px 0 12px;
+}
+.lpd-t {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 12px;
+}
+.lpd-t th {
+  background: #eef3fa;
+  color: #0b1220;
+  font-weight: 700;
+  text-align: left;
+  padding: 5px 7px;
+  border: 1px solid #d0d5dd;
+}
+.lpd-t td {
+  padding: 4px 7px;
+  border: 1px solid #d0d5dd;
+  vertical-align: top;
+}
+.lpd-t.sm {
+  font-size: 11px;
+}
+.lpd-t.sm td,
+.lpd-t.sm th {
+  padding: 3px 5px;
+}
+.lpd-t.kv td:first-child {
+  font-weight: 700;
+  width: 34%;
+  background: #f7f9fc;
+}
+.lpd-fig {
+  margin: 12px 0;
+  text-align: center;
+}
+.lpd-fig img {
+  max-width: 100%;
+  border: 1px solid #e3e7ee;
+}
+.lpd-fig figcaption {
+  font-size: 11.5px;
+  color: #566275;
+  margin-top: 4px;
+}
+.lpd-wait {
+  color: #566275;
+}
+@media (max-width: 600px) {
+  .lp-doc {
+    padding: 22px 16px;
+  }
+}

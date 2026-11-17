@@ -1,0 +1,98 @@
+/* 00_tokens.css
+   Design tokens shared by every stylesheet: fonts, radii, elevation, motion.
+   Color tokens (--bg, --panel, --gold = primary accent, ...) are defined per theme in 01_base.css.
+   Type: Fira Sans for the interface, Fira Code for numbers in matrices and code (SIL Open Font License,
+   files in assets/fonts). Icons: Phosphor (MIT), see scripts/00_icons.js. */
+@font-face {
+  font-family: 'Fira Sans';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('../assets/fonts/fira-sans-latin-400-normal.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Fira Sans';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('../assets/fonts/fira-sans-latin-500-normal.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Fira Sans';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('../assets/fonts/fira-sans-latin-600-normal.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Fira Sans';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('../assets/fonts/fira-sans-latin-700-normal.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Fira Sans';
+  font-style: normal;
+  font-weight: 400 500;
+  font-display: swap;
+  src: url('../assets/fonts/fira-sans-greek-400-normal.woff2') format('woff2');
+  unicode-range: U+0370-03FF;
+}
+@font-face {
+  font-family: 'Fira Sans';
+  font-style: normal;
+  font-weight: 600 700;
+  font-display: swap;
+  src: url('../assets/fonts/fira-sans-greek-600-normal.woff2') format('woff2');
+  unicode-range: U+0370-03FF;
+}
+@font-face {
+  font-family: 'Fira Code';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('../assets/fonts/fira-code-latin-400-normal.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Fira Code';
+  font-style: normal;
+  font-weight: 500 700;
+  font-display: swap;
+  src: url('../assets/fonts/fira-code-latin-500-normal.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Fira Code';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('../assets/fonts/fira-code-greek-400-normal.woff2') format('woff2');
+  unicode-range: U+0370-03FF;
+}
+
+:root {
+  --font-ui: 'Fira Sans', 'Segoe UI', Arial, sans-serif;
+  --font-code: 'Fira Code', Consolas, 'Courier New', monospace;
+  --fs-xs: 11px;
+  --fs-sm: 12.5px;
+  --fs-md: 14px;
+  --fs-lg: 17px;
+  --fs-xl: 24px;
+  --r-xs: 4px;
+  --r-sm: 7px;
+  --r-md: 10px;
+  --r-lg: 14px;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --dur-fast: 120ms;
+  --dur: 180ms;
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --ctl-h: 34px;
+  --icon: 18px;
+  --shadow-1: 0 1px 2px rgba(2, 6, 23, 0.18);
+  --shadow-2: 0 10px 30px rgba(2, 6, 23, 0.28);
+  --focus-ring: 0 0 0 2px var(--bg), 0 0 0 4px var(--gold);
+}

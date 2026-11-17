@@ -1,0 +1,141 @@
+/* 04_reference.css
+   Reference pages (learning material and glossary).
+   Loaded in order by index.html; file order is cascade order. Design tokens live in 00_tokens.css. */
+/* ---- Rujukan / Glossary (Sesi 14) ---- */
+body[data-mode='reference'] .wrap {
+  display: none;
+}
+body:not([data-mode='reference']) #app-reference {
+  display: none;
+}
+
+#app-reference {
+  min-height: 100vh;
+  background: var(--bg);
+  font-family: Arial, Helvetica, sans-serif;
+  padding: 0 0 60px 0;
+}
+.rj-top {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 24px 14px 96px;
+  background: var(--bg);
+  border-bottom: 1px solid var(--panel-line);
+}
+.rj-top h1 {
+  flex: 1;
+  margin: 0;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-strong);
+}
+@media (max-width: 700px) {
+  .rj-top {
+    padding: 12px 16px;
+    flex-wrap: wrap;
+  }
+  .rj-top h1 {
+    order: -1;
+    flex-basis: 100%;
+    font-size: 17px;
+  }
+}
+.rj-layout {
+  display: grid;
+  grid-template-columns: 250px minmax(0, 1fr);
+  gap: 28px;
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 22px 24px 0 96px;
+}
+@media (max-width: 900px) {
+  .rj-layout {
+    grid-template-columns: 1fr;
+    padding: 16px;
+  }
+  .rj-toc {
+    position: static !important;
+    max-height: none !important;
+  }
+}
+.rj-toc {
+  position: sticky;
+  top: 78px;
+  align-self: start;
+  max-height: calc(100vh - 100px);
+  overflow: auto;
+  background: var(--panel);
+  border: 1px solid var(--panel-line);
+  border-radius: 12px;
+  padding: 12px;
+}
+.rj-toc .g {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted-dim);
+  margin: 12px 6px 6px;
+}
+.rj-toc .g:first-child {
+  margin-top: 2px;
+}
+.rj-toc a {
+  display: block;
+  padding: 6px 8px;
+  border-radius: 6px;
+  font-size: 13px;
+  color: var(--text);
+  text-decoration: none;
+  line-height: 1.35;
+}
+.rj-toc a.sub {
+  padding-left: 20px;
+  font-size: 12.5px;
+  color: var(--muted);
+}
+.rj-toc a:hover {
+  background: var(--hover-bg);
+  color: var(--gold);
+}
+.rj-toc a.on {
+  background: var(--tint-2);
+  color: var(--gold);
+  font-weight: 700;
+}
+.rj-content .materi {
+  padding: 0;
+  max-width: none;
+}
+.rj-content h2.rj-part {
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  color: var(--gold);
+  margin: 8px 0 4px;
+  border: none;
+}
+.rj-content .materi [id] {
+  scroll-margin-top: 84px;
+} /* lebih spesifik dari .materi [id] lama, supaya judul tidak tertutup bar atas */
+.rj-content .materi + .materi {
+  margin-top: 36px;
+  padding-top: 8px;
+  border-top: 1px solid var(--panel-line);
+}
+.rj-content .gcard a {
+  font-size: 12px;
+}
+.legacy-nav {
+  position: absolute;
+  top: 18px;
+  left: 20px;
+  display: flex;
+  gap: 8px;
+}
+body:not(.reference-on) #legacy-reference {
+  display: none;
+}
